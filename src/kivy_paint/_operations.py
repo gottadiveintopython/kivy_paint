@@ -2,6 +2,7 @@ __all__ = (
     'RectangleLine', 'RectangleFill',
     'EllipseLine', 'EllipseFill',
     'FreeHand', 'PolyLine',
+    'Clear',
 )
 
 
@@ -148,3 +149,16 @@ class PolyLine:
             finally:
                 target.unbind(on_touch_down=on_touch_down)
                 window.unbind(mouse_pos=on_mouse_pos)
+
+
+class Clear:
+    icon = 'delete-alert'
+    helper_text = ''
+
+    @classmethod
+    async def main(cls, *, widgets, ctx):
+        from ._utils import show_yes_no_dialog
+        if await show_yes_no_dialog(text_main='clear the canvas ?') == 'yes':
+            widgets['target'].canvas.clear()
+        for c in widgets['toolbox'].children:
+            c.state = 'normal'
