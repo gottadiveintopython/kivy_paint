@@ -34,7 +34,6 @@ Builder.load_string('''
             id: target
         Label:
             id: helper_text
-            pos_hint: {'top': 1, }
             color: theme.foreground_color
             font_size: theme.font_size
             height: self.texture_size[1]
