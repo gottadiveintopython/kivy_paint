@@ -6,27 +6,31 @@ from kivy.factory import Factory as F
 
 
 Builder.load_string('''
+#:import theme kivy_paint.theme
+
 <KPYesNoDialog@ModalView>:
-    size_hint: .7, .3
+    size_hint: None, None
+    size: content.minimum_size
     BoxLayout:
+        id: content
         orientation: 'vertical'
-        padding: '8dp'
+        padding: '16dp'
         spacing: '8dp'
         Label:
             id: main
-            font_size: max(sp(16), 30)
+            font_size: theme.font_size
+            size_hint_min: [v + dp(8) for v in self.texture_size]
         BoxLayout:
-            spacing: '4dp'
-            size_hint_y: None
-            height: self.minimum_height
+            spacing: '8dp'
+            size_hint_min: self.minimum_size
             Button:
                 id: yes
-                font_size: max(sp(16), 30)
-                size_hint_min: self.texture_size
+                font_size: theme.font_size
+                size_hint_min: [v + dp(8) for v in self.texture_size]
             Button:
                 id: no
-                font_size: max(sp(16), 30)
-                size_hint_min: self.texture_size
+                font_size: theme.font_size
+                size_hint_min: [v + dp(8) for v in self.texture_size]
 ''')
 
 
