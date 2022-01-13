@@ -29,7 +29,7 @@ Builder.load_string('''
         cols: 2
     BoxLayout:
         orientation: 'vertical'
-        spacing: 4
+        spacing: '4dp'
         size_hint: 1000, 1000
         KPTarget:
             id: target

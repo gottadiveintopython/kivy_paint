@@ -103,9 +103,9 @@ class FreeHand:
             last_x, last_y = touch.opos
             async for __ in ak.rest_of_touch_moves(target, touch):
                 if abs_(last_x - touch.x) + abs_(last_y - touch.y) > precision:
-                    points = line.points
-                    points.extend(to_local(*touch.pos))
-                    line.points = points
+                    p = line.points
+                    p.extend(to_local(*touch.pos))
+                    line.points = p
                     last_x, last_y = touch.pos
 
 
