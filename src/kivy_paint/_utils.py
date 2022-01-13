@@ -1,4 +1,4 @@
-__all__ = ('show_yes_no_dialog', 'warn_if_run_on_mobile', )
+__all__ = ('show_yes_no_dialog', 'warn_if_run_on_mobile', 'open_file_with_default_os_app', 'temp_dir', )
 
 from functools import lru_cache
 from kivy.core.text import DEFAULT_FONT
@@ -81,3 +81,20 @@ def warn_if_run_on_mobile():
             "Otherwise, some functions may not work properly."
         )
 
+
+def open_file_with_default_os_app(filepath):
+    import subprocess
+    from kivy.utils import platform
+    if platform == 'linux':
+        subprocess.call(('xdg-open', filepath))
+    elif platform == 'macosx':
+        subprocess.call(('open', filepath))
+    elif platform == 'win':
+        import os
+        os.startfile(filepath)
+
+
+@lru_cache(maxsize=1)
+def temp_dir():
+    from tempfile import mkdtemp
+    return mkdtemp(prefix='kivy_paint.')

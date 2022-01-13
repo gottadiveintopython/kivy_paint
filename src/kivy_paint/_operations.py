@@ -1,8 +1,9 @@
+# NOTE: The order of __all__ is important as it will be the order of toolbox items.
 __all__ = (
     'RectangleLine', 'RectangleFill',
     'EllipseLine', 'EllipseFill',
     'FreeHand', 'PolyLine',
-    'Clear',
+    'Save', 'Clear',
 )
 
 
@@ -160,5 +161,25 @@ class Clear:
         from ._utils import show_yes_no_dialog
         if await show_yes_no_dialog(text_main='clear the canvas ?') == 'yes':
             widgets['target'].canvas.clear()
+        for c in widgets['toolbox'].children:
+            c.state = 'normal'
+
+
+class Save:
+    icon = 'content-save'
+    helper_text = ''
+
+    @classmethod
+    async def main(cls, *, widgets, ctx):
+        # NOTE: For some reason, 'Widget.export_as_image()' doesn't work so uses 'Window.screenshot()' instead.
+        # NOTE: Screenshot sometimes fucked up (maybe) depending on the window size.
+        from os.path import join as ospath_join
+        from kivy.core.window import Window
+        import asynckivy as ak
+        from ._utils import show_yes_no_dialog, open_file_with_default_os_app, temp_dir
+        if await show_yes_no_dialog(text_main='take a screenshot of the entire app?\n(Sorry, you cannot just save the canvas for now. )') == 'yes':
+            await ak.sleep(.3)
+            actual_filepath = Window.screenshot(ospath_join(temp_dir(), 'screenshot.png'))
+            open_file_with_default_os_app(actual_filepath)
         for c in widgets['toolbox'].children:
             c.state = 'normal'
