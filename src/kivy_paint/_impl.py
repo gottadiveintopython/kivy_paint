@@ -1,6 +1,5 @@
 __all__ = ('KPMain', )
 
-from functools import lru_cache
 from kivy.properties import ObjectProperty, NumericProperty
 from kivy.event import EventDispatcher
 from kivy.factory import Factory as F
@@ -97,7 +96,8 @@ class KPContext(EventDispatcher):
 
 class KPMain(F.BoxLayout):
     def on_kv_post(self, *args, **kwargs):
-        _warn_if_run_on_mobile()
+        from ._utils import warn_if_run_on_mobile
+        warn_if_run_on_mobile()
         super().on_kv_post(*args, **kwargs)
         self._widgets = {
             'root': self,
@@ -129,14 +129,3 @@ class KPMain(F.BoxLayout):
             ctx.op_task.cancel()
             ctx.op_task = asynckivy.start(op_cls.main(widgets=self._widgets, ctx=ctx))
             self.ids.helper_text.text = op_cls.helper_text
-
-
-@lru_cache(maxsize=1)
-def _warn_if_run_on_mobile():
-    from kivy.utils import platform
-    if platform not in ('linux', 'win', 'macosx', ):
-        from kivy.logger import Logger
-        Logger.warning(
-            "kivy_paint: This module requires a 3-button mouse to be connected. "
-            "Otherwise, some functions may not work properly."
-        )

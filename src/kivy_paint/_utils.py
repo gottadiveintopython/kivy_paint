@@ -1,5 +1,6 @@
-__all__ = ('show_yes_no_dialog', )
+__all__ = ('show_yes_no_dialog', 'warn_if_run_on_mobile', )
 
+from functools import lru_cache
 from kivy.core.text import DEFAULT_FONT
 from kivy.lang import Builder
 from kivy.factory import Factory as F
@@ -68,3 +69,15 @@ async def show_yes_no_dialog(*, text_main='', font_name=DEFAULT_FONT, text_yes='
     finally:
         dialog.dismiss()
         _cache.append(dialog)
+
+
+@lru_cache(maxsize=1)
+def warn_if_run_on_mobile():
+    from kivy.utils import platform
+    if platform not in ('linux', 'win', 'macosx', ):
+        from kivy.logger import Logger
+        Logger.warning(
+            "kivy_paint: This module requires a 3-button mouse to be connected. "
+            "Otherwise, some functions may not work properly."
+        )
+
