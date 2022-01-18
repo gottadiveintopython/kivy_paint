@@ -34,7 +34,7 @@ class RectangleLine:
             target.canvas.add(ig := InstructionGroup())
             ig.add(Color(*ctx.line_color))
             ig.add(line := Line(width=ctx.line_width))
-            async for __ in ak.rest_of_touch_moves(target, touch):
+            async for __ in ak.rest_of_touch_moves(target, touch, stop_dispatching=True):
                 x, y = to_local(*touch.pos)
                 min_x, max_x = (x, ox) if x < ox else (ox, x)
                 min_y, max_y = (y, oy) if y < oy else (oy, y)
@@ -68,7 +68,7 @@ class RectangleFill:
             target.canvas.add(ig := InstructionGroup())
             ig.add(Color(*ctx.fill_color))
             ig.add(shape := shape_cls(size=(0, 0)))
-            async for __ in ak.rest_of_touch_moves(target, touch):
+            async for __ in ak.rest_of_touch_moves(target, touch, stop_dispatching=True):
                 x, y = to_local(*touch.pos)
                 min_x, max_x = (x, ox) if x < ox else (ox, x)
                 min_y, max_y = (y, oy) if y < oy else (oy, y)
@@ -102,7 +102,7 @@ class FreeHand:
             ig.add(line := Line(width=ctx.line_width, points=[*to_local(*touch.opos)]))
             precision = ctx.freehand_precision
             last_x, last_y = touch.opos
-            async for __ in ak.rest_of_touch_moves(target, touch):
+            async for __ in ak.rest_of_touch_moves(target, touch, stop_dispatching=True):
                 if abs_(last_x - touch.x) + abs_(last_y - touch.y) > precision:
                     p = line.points
                     p.extend(to_local(*touch.pos))
