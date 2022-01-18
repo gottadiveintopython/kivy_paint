@@ -1,6 +1,6 @@
 # Kivy Paint
 
-just a toy.
+Just a toy, not a legit app
 
 ![](screenshot.png)
 

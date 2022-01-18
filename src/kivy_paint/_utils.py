@@ -12,6 +12,8 @@ Builder.load_string('''
 <KPYesNoDialog@ModalView>:
     size_hint: None, None
     size: content.minimum_size
+    background: ''
+    background_color: "#222222FF"
     BoxLayout:
         id: content
         orientation: 'vertical'
